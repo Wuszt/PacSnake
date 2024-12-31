@@ -17,6 +17,17 @@ pacsnake::GridPawn* pacsnake::Grid::GetPawn( GridPawnID id )
 	return nullptr;
 }
 
+const pacsnake::GridPawn* pacsnake::Grid::GetPawn( GridPawnID id ) const
+{
+	auto it = std::find_if( m_pawns.begin(), m_pawns.end(), [ id ]( const GridPawn& pawn ) { return pawn.m_id == id; } );
+	if ( it != m_pawns.end() )
+	{
+		return &*it;
+	}
+
+	return nullptr;
+}
+
 void pacsnake::Grid::UpdatePawnTail( pacsnake::GridPawn& pawn )
 {
 	if ( auto* tail = GetPawn( pawn.m_nextTailID ) )

@@ -27,6 +27,14 @@ namespace pacsnake
 			return m_isFinished;
 		}
 
+		struct Score
+		{
+			pacsnake::GridPawnID m_id;
+			Uint32 m_score = 0u;
+		};
+
+		std::vector< Score > CalculateScores() const;
+
 	private:
 		void OnPickupGrabbed( pacsnake::GridPawnID grabber );
 

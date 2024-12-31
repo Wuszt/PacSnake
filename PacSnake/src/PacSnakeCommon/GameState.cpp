@@ -71,6 +71,30 @@ forge::CallbackToken pacsnake::GameState::RegisterOnNewTail( std::function< void
 	return m_onNewTail.AddListener( std::move( func ) );
 }
 
+Uint32 CalcScoreForPawn( const pacsnake::Grid& grid, const pacsnake::GridPawn& pawn )
+{
+	if ( !pawn.m_nextTailID.IsValid() )
+	{
+		return 0u;
+	}
+
+	return 1 + CalcScoreForPawn( grid, *grid.GetPawn( pawn.m_nextTailID ) );
+}
+
+std::vector< pacsnake::GameState::Score > pacsnake::GameState::CalculateScores() const
+{
+	std::vector< pacsnake::GameState::Score > scores;
+	for ( const auto& pawn : m_grid.GetPawns() )
+	{
+		if ( pawn.m_growsTail )
+		{
+			scores.push_back( { pawn.m_id, CalcScoreForPawn( m_grid, pawn ) });
+		}
+	}
+
+	return scores;
+}
+
 void pacsnake::GameState::OnPickupGrabbed( pacsnake::GridPawnID grabberID )
 {
 	auto* tailAttachment = m_grid.GetPawn( grabberID );
