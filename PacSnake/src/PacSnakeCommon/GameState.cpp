@@ -34,6 +34,11 @@ pacsnake::GameState::GameState( Uint32 gridHeight, Uint32 gridWidth )
 
 void pacsnake::GameState::Update()
 {
+	if ( IsFinished() )
+	{
+		return;
+	}
+
 	m_grid.Update();
 	auto collisions = m_grid.FindCollisions();
 	for ( const auto& collision : collisions )
@@ -46,6 +51,18 @@ void pacsnake::GameState::Update()
 		{
 			OnPickupGrabbed( collision.m_first );
 		}
+		else
+		{
+			m_isFinished = true;
+		}
+	}
+
+	for ( const GridPawn& pawn : m_grid.GetPawns() )
+	{
+		if ( Math::Abs( pawn.m_pos.X ) > m_grid.GetWidth() / 2 || Math::Abs( pawn.m_pos.Y ) > m_grid.GetHeight() / 2 )
+		{
+			m_isFinished = true;
+		}
 	}
 }
 
@@ -56,12 +73,20 @@ forge::CallbackToken pacsnake::GameState::RegisterOnNewTail( std::function< void
 
 void pacsnake::GameState::OnPickupGrabbed( pacsnake::GridPawnID grabberID )
 {
-	auto* grabber = m_grid.GetPawn( grabberID );
-	auto newTail = m_grid.GetPawn( m_grid.AddPawn( grabber->m_pos - grabber->m_dir ) );
-	grabber = m_grid.GetPawn( grabberID );
+	auto* tailAttachment = m_grid.GetPawn( grabberID );
+	
+	while ( tailAttachment->m_nextTailID.IsValid() )
+	{
+		tailAttachment = m_grid.GetPawn( tailAttachment->m_nextTailID );
+	}
+	auto tailAttachmentID = tailAttachment->m_id;
 
-	newTail->m_nextTailID = grabber->m_nextTailID;
-	grabber->m_nextTailID = newTail->m_id;
+	auto newTail = m_grid.GetPawn( m_grid.AddPawn( tailAttachment->m_prevPos ) );
+	tailAttachment = m_grid.GetPawn( tailAttachmentID );
+
+
+	newTail->m_nextTailID = tailAttachment->m_nextTailID;
+	tailAttachment->m_nextTailID = newTail->m_id;
 
 	m_onNewTail.Invoke( newTail->m_id );
 	GetGrid().GetPawn( m_pickupID )->m_pos = GenerateUnoccupiedPos( m_grid );

@@ -11,7 +11,7 @@ namespace pacsnake
 
 	public:
 		GridSystem()
-			: m_gameState( GameState( 19u, 19u ) )
+			: m_gameState( GameState( 21u, 21u ) )
 		{}
 
 		forge::CallbackToken RegisterOnSimUpdate( std::function< void() > func );
@@ -20,6 +20,11 @@ namespace pacsnake
 		Grid& GetGrid()
 		{
 			return m_gameState.GetGrid();
+		}
+
+		GameState& GetGameState()
+		{
+			return m_gameState;
 		}
 
 		Float GetPeriod() const

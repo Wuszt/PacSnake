@@ -22,11 +22,17 @@ namespace pacsnake
 			return m_pickupID;
 		}
 
+		Bool IsFinished() const
+		{
+			return m_isFinished;
+		}
+
 	private:
 		void OnPickupGrabbed( pacsnake::GridPawnID grabber );
 
 		forge::Callback< pacsnake::GridPawnID > m_onNewTail;
 		Grid m_grid;
 		GridPawnID m_pickupID;
+		Bool m_isFinished = false;
 	};
 }

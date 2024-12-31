@@ -14,10 +14,6 @@ void pacsnake::Actor::OnInit( forge::ObjectInitData& initData )
 	{
 		m_pawnID = gridSystem.GetGrid().AddPawn( Vector2( 0.0f, 0.0f ) );
 	}
-	else
-	{
-		m_prevPos = GetPawn().m_pos;
-	}
 
 	m_beforeGridUpdateToken = gridSystem.RegisterOnBeforeSimUpdate( [ this ]()
 		{
@@ -34,13 +30,6 @@ void pacsnake::Actor::OnInit( forge::ObjectInitData& initData )
 		{
 			Update();
 		} );
-}
-
-void pacsnake::Actor::OnBeforeSimUpdated()
-{
-	auto& gridSystem = GetEngineInstance().GetSystemsManager().GetSystem< pacsnake::GridSystem >();
-	GridPawn* pawn = gridSystem.GetGrid().GetPawn( m_pawnID );
-	m_prevPos = pawn->m_pos;
 }
 
 void pacsnake::Actor::OnSimUpdated()
@@ -62,12 +51,17 @@ void pacsnake::Actor::Update()
 	}
 
 	auto& gridSystem = GetEngineInstance().GetSystemsManager().GetSystem< pacsnake::GridSystem >();
+	if ( gridSystem.GetGameState().IsFinished() )
+	{
+		return;
+	}
+
 	GridPawn& pawn = GetPawn();
 
 	const Float currentTime = forge::Time::GetTime();
 	const Float t = ( currentTime - gridSystem.GetLastSimUpdateTime() ) / gridSystem.GetPrevPeriod();
 
-	GetComponent< forge::TransformComponent >()->SetWorldPosition( Vector3( Math::Lerp( m_prevPos, pawn.m_pos, t ), 0.5f ) );
+	GetComponent< forge::TransformComponent >()->SetWorldPosition( Vector3( Math::Lerp( pawn.m_prevPos, pawn.m_pos, t ), 0.5f ) );
 }
 
 pacsnake::GridPawn& pacsnake::Actor::GetPawn() const

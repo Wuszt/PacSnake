@@ -29,11 +29,13 @@ namespace pacsnake
 	{
 		GridPawn( const Vector2& pos )
 			: m_pos( pos )
+			, m_prevPos( pos )
 			, m_id( GridPawnID::GenerateID() )
 		{}
 
 		Vector2 m_pos;
 		Vector2 m_dir;
+		Vector2 m_prevPos;
 		const GridPawnID m_id;
 		GridPawnID m_nextTailID;
 		Bool m_growsTail = false;

@@ -23,7 +23,7 @@ namespace pacsnake
 
 	protected:
 		virtual void OnInit( forge::ObjectInitData& initData ) override;
-		virtual void OnBeforeSimUpdated();
+		virtual void OnBeforeSimUpdated() {}
 		virtual void OnSimUpdated();
 		virtual void Update();
 
@@ -36,6 +36,5 @@ namespace pacsnake
 		pacsnake::GridPawnID m_pawnID;
 
 		Bool m_enabledSmoothMovement = false;
-		Vector2 m_prevPos;
 	};
 }

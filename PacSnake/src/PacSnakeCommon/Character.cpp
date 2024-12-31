@@ -16,21 +16,22 @@ void pacsnake::Character::TurnRight()
 {
 	auto& gridSystem = GetEngineInstance().GetSystemsManager().GetSystem< pacsnake::GridSystem >();
 	GridPawn& pawn = GetPawn();
-	if ( pawn.m_dir == Vector2( 1.0f, 0.0f ) )
+	Vector2& dir = pawn.m_dir;
+	if ( dir == Vector2( 1.0f, 0.0f ) )
 	{
-		pawn.m_dir = Vector2( 0.0f, -1.0f );
+		dir = Vector2( 0.0f, -1.0f );
 	}
-	else if ( pawn.m_dir == Vector2( 0.0f, -1.0f ) )
+	else if ( dir == Vector2( 0.0f, -1.0f ) )
 	{
-		pawn.m_dir = Vector2( -1.0f, 0.0f );
+		dir = Vector2( -1.0f, 0.0f );
 	}
-	else if ( pawn.m_dir == Vector2( -1.0f, 0.0f ) )
+	else if ( dir == Vector2( -1.0f, 0.0f ) )
 	{
-		pawn.m_dir = Vector2( 0.0f, 1.0f );
+		dir = Vector2( 0.0f, 1.0f );
 	}
-	else if ( pawn.m_dir == Vector2( 0.0f, 1.0f ) )
+	else if ( dir == Vector2( 0.0f, 1.0f ) )
 	{
-		pawn.m_dir = Vector2( 1.0f, 0.0f );
+		dir = Vector2( 1.0f, 0.0f );
 	}
 }
 

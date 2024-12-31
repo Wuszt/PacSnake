@@ -30,11 +30,16 @@ void pacsnake::Grid::Update()
 {
 	for ( GridPawn& pawn : m_pawns )
 	{
+		pawn.m_prevPos = pawn.m_pos;
+	}
+
+	for ( GridPawn& pawn : m_pawns )
+	{
 		if ( pawn.m_growsTail )
 		{
 			UpdatePawnTail( pawn );
 		}
-		pawn.m_pos += pawn.m_dir;
+		pawn.m_pos = pawn.m_pos + pawn.m_dir;
 	}
 }
 
