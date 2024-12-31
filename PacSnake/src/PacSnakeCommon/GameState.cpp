@@ -71,6 +71,11 @@ forge::CallbackToken pacsnake::GameState::RegisterOnNewTail( std::function< void
 	return m_onNewTail.AddListener( std::move( func ) );
 }
 
+pacsnake::GridPawn& pacsnake::GameState::GetPickupPawn()
+{
+	return *GetGrid().GetPawn( GetPickupID() );
+}
+
 Uint32 CalcScoreForPawn( const pacsnake::Grid& grid, const pacsnake::GridPawn& pawn )
 {
 	if ( !pawn.m_nextTailID.IsValid() )

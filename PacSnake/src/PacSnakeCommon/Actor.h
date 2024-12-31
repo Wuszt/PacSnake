@@ -1,6 +1,7 @@
 #pragma once
 #include "GameEngine/SceneObject.h"
 #include "Grid.h"
+#include "Core/Callback.h"
 
 namespace pacsnake
 {
@@ -21,13 +22,13 @@ namespace pacsnake
 			m_enabledSmoothMovement = enable;
 		}
 
+		GridPawn& GetPawn() const;
+
 	protected:
 		virtual void OnInit( forge::ObjectInitData& initData ) override;
 		virtual void OnBeforeSimUpdated() {}
 		virtual void OnSimUpdated();
 		virtual void Update();
-
-		GridPawn& GetPawn() const;
 
 	private:
 		forge::CallbackToken m_gridUpdateToken;

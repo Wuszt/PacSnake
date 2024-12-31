@@ -17,6 +17,19 @@ pacsnake::GridPawn* pacsnake::Grid::GetPawn( GridPawnID id )
 	return nullptr;
 }
 
+const pacsnake::GridPawn* pacsnake::Grid::GetPawnAtPos( const Vector2& pos ) const
+{
+	for ( const auto& pawn : m_pawns )
+	{
+		if ( pawn.m_pos == pos )
+		{
+			return &pawn;
+		}
+	}
+
+	return nullptr;
+}
+
 const pacsnake::GridPawn* pacsnake::Grid::GetPawn( GridPawnID id ) const
 {
 	auto it = std::find_if( m_pawns.begin(), m_pawns.end(), [ id ]( const GridPawn& pawn ) { return pawn.m_id == id; } );

@@ -17,6 +17,8 @@ namespace pacsnake
 
 		[[nodiscard]] forge::CallbackToken RegisterOnNewTail( std::function< void( pacsnake::GridPawnID ) > func );
 
+		GridPawn& GetPickupPawn();
+
 		GridPawnID GetPickupID() const
 		{
 			return m_pickupID;

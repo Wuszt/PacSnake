@@ -52,6 +52,7 @@ namespace pacsnake
 		GridPawnID AddPawn( const Vector2& pos );
 		GridPawn* GetPawn( GridPawnID id );
 		const GridPawn* GetPawn( GridPawnID id ) const;
+		const GridPawn* GetPawnAtPos( const Vector2& pos ) const;
 
 		Uint32 GetWidth() const
 		{

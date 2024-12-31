@@ -52,7 +52,7 @@ namespace pacsnake
 		forge::Callback<> m_onBeforeSimUpdate;
 
 		Float m_lastSimUpdateTime = 0.0f;
-		Float m_period = 0.5f;
+		Float m_period = 0.1f;
 		Float m_prevPeriod = m_period;
 	};
 }
