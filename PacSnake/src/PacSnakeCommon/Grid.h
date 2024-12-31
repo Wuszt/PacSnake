@@ -15,21 +15,28 @@ namespace pacsnake
 
 	Bool operator==( const GridPawnID& ) const = default;
 
+	Bool IsValid() const
+	{
+		return m_id != c_invalidID;
+	}
+
 	private:
-		Uint32 m_id = 0u;
+		static constexpr Uint32 c_invalidID = 0u;
+		Uint32 m_id = c_invalidID;
 	};
 
 	struct GridPawn
 	{
-		GridPawn( const Vector2& pos, const Vector2& dir )
+		GridPawn( const Vector2& pos )
 			: m_pos( pos )
-			, m_dir( dir )
 			, m_id( GridPawnID::GenerateID() )
 		{}
 
 		Vector2 m_pos;
 		Vector2 m_dir;
 		const GridPawnID m_id;
+		GridPawnID m_nextTailID;
+		Bool m_growsTail = false;
 	};
 
 	class Grid
@@ -40,7 +47,7 @@ namespace pacsnake
 			, m_height( height )
 		{}
 
-		GridPawnID AddPawn( const Vector2& pos, const Vector2& dir );
+		GridPawnID AddPawn( const Vector2& pos );
 		GridPawn* GetPawn( GridPawnID id );
 
 		Uint32 GetWidth() const
@@ -52,6 +59,13 @@ namespace pacsnake
 		{
 			return m_height;
 		}
+
+		forge::ArraySpan< const GridPawn > GetPawns() const
+		{
+			return m_pawns;
+		}
+
+		void UpdatePawnTail( pacsnake::GridPawn& pawn );
 
 		void Update();
 

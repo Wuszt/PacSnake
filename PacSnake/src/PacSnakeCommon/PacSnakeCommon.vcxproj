@@ -327,17 +327,21 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actor.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Fpch.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="GridSystem.h" />
     <ClInclude Include="InternalDefaults.h" />
     <ClInclude Include="Pickup.h" />
     <ClInclude Include="PlayerCharacterComponent.h" />
     <ClInclude Include="PublicDefaults.h" />
     <ClInclude Include="Snake.h" />
+    <ClInclude Include="Tail.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Fpch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -346,10 +350,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GridSystem.cpp" />
     <ClCompile Include="Pickup.cpp" />
     <ClCompile Include="PlayerCharacterComponent.cpp" />
     <ClCompile Include="Snake.cpp" />
+    <ClCompile Include="Tail.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -38,6 +38,15 @@
     <ClInclude Include="GridSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Tail.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Fpch.cpp">
@@ -59,6 +68,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GridSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tail.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

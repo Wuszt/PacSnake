@@ -1,6 +1,6 @@
 #pragma once
-#include "GameEngine/SceneObject.h"
 #include "Grid.h"
+#include "Actor.h"
 
 namespace forge
 {
@@ -9,9 +9,9 @@ namespace forge
 
 namespace pacsnake
 {
-	class Character : public forge::SceneObject
+	class Character : public pacsnake::Actor
 	{
-		RTTI_DECLARE_ABSTRACT_CLASS( Character, forge::SceneObject );
+		RTTI_DECLARE_ABSTRACT_CLASS( Character, pacsnake::Actor );
 
 	public:
 		enum class Action
@@ -29,20 +29,12 @@ namespace pacsnake
 		const Vector2& GetDir() const;
 
 	protected:
-		virtual void OnInit( forge::ObjectInitData& initData ) override;
+		virtual void OnBeforeSimUpdated() override;
 
 	private:
 		void TurnLeft();
 		void TurnRight();
 
-		forge::CallbackToken m_gridUpdateToken;
-		forge::CallbackToken m_beforeGridUpdateToken;
-		forge::CallbackToken m_updateToken;
-
-		Vector2 m_prevPos;
-		Float m_prevPeriod = 0.0f;
-
-		pacsnake::GridPawnID m_pawnID;
 		Action m_scheduledAction;
 	};
 }

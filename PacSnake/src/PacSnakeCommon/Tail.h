@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Grid.h"
 #include "Actor.h"
 
@@ -10,16 +9,14 @@ namespace forge
 
 namespace pacsnake
 {
-	class Pickup : public pacsnake::Actor
+	class Tail : public pacsnake::Actor
 	{
-		RTTI_DECLARE_CLASS( Pickup, pacsnake::Actor );
+		RTTI_DECLARE_CLASS( Tail, pacsnake::Actor );
 
 	public:
-	protected:
 		virtual void OnInit( forge::ObjectInitData& initData ) override;
-		virtual void Update() override;
-
+		
 	private:
-		forge::CallbackToken m_updateToken;
+		pacsnake::Tail* m_nextTail = nullptr;
 	};
 }

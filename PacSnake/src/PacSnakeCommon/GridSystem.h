@@ -1,6 +1,7 @@
 #pragma once
 #include "GameEngine/ISystem.h"
 #include "../PacSnakeCommon/Grid.h"
+#include "GameState.h"
 
 namespace pacsnake
 {
@@ -10,7 +11,7 @@ namespace pacsnake
 
 	public:
 		GridSystem()
-			: m_grid( Grid( 19u, 19u ) )
+			: m_gameState( GameState( 19u, 19u ) )
 		{}
 
 		forge::CallbackToken RegisterOnSimUpdate( std::function< void() > func );
@@ -18,12 +19,17 @@ namespace pacsnake
 
 		Grid& GetGrid()
 		{
-			return m_grid;
+			return m_gameState.GetGrid();
 		}
 
 		Float GetPeriod() const
 		{
 			return m_period;
+		}
+
+		Float GetPrevPeriod() const
+		{
+			return m_prevPeriod;
 		}
 
 		Float GetLastSimUpdateTime() const
@@ -33,15 +39,15 @@ namespace pacsnake
 
 	private:
 		virtual void OnInitialize() override;
-		void CreateNewPickup();
 
-		Grid m_grid;
+		GameState m_gameState;
+		forge::CallbackToken m_onNewTailToken;
 		forge::CallbackToken m_updateToken;
 		forge::Callback<> m_onSimUpdated;
 		forge::Callback<> m_onBeforeSimUpdate;
-		pacsnake::GridPawnID m_pickupID;
 
 		Float m_lastSimUpdateTime = 0.0f;
 		Float m_period = 0.5f;
+		Float m_prevPeriod = m_period;
 	};
 }

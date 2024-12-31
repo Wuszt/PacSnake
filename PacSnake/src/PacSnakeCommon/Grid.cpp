@@ -1,9 +1,9 @@
 #include "Fpch.h"
 #include "Grid.h"
 
-pacsnake::GridPawnID pacsnake::Grid::AddPawn( const Vector2& pos, const Vector2& dir )
+pacsnake::GridPawnID pacsnake::Grid::AddPawn( const Vector2& pos )
 {
-	return m_pawns.emplace_back( pos, dir ).m_id;
+	return m_pawns.emplace_back( pos ).m_id;
 }
 
 pacsnake::GridPawn* pacsnake::Grid::GetPawn( GridPawnID id )
@@ -17,10 +17,23 @@ pacsnake::GridPawn* pacsnake::Grid::GetPawn( GridPawnID id )
 	return nullptr;
 }
 
+void pacsnake::Grid::UpdatePawnTail( pacsnake::GridPawn& pawn )
+{
+	if ( auto* tail = GetPawn( pawn.m_nextTailID ) )
+	{
+		UpdatePawnTail( *tail );
+		tail->m_pos = pawn.m_pos;
+	}
+}
+
 void pacsnake::Grid::Update()
 {
 	for ( GridPawn& pawn : m_pawns )
 	{
+		if ( pawn.m_growsTail )
+		{
+			UpdatePawnTail( pawn );
+		}
 		pawn.m_pos += pawn.m_dir;
 	}
 }
