@@ -76,14 +76,15 @@ pacsnake::GridPawn& pacsnake::GameState::GetPickupPawn()
 	return *GetGrid().GetPawn( GetPickupID() );
 }
 
-Uint32 CalcScoreForPawn( const pacsnake::Grid& grid, const pacsnake::GridPawn& pawn )
+Uint32 pacsnake::GameState::CalcTailLength( pacsnake::GridPawnID owner ) const
 {
-	if ( !pawn.m_nextTailID.IsValid() )
+	auto* pawn = m_grid.GetPawn( owner );
+	if ( pawn == nullptr || !pawn->m_nextTailID.IsValid() )
 	{
 		return 0u;
 	}
 
-	return 1 + CalcScoreForPawn( grid, *grid.GetPawn( pawn.m_nextTailID ) );
+	return 1 + CalcTailLength( pawn->m_nextTailID );
 }
 
 std::vector< pacsnake::GameState::Score > pacsnake::GameState::CalculateScores() const
@@ -93,7 +94,7 @@ std::vector< pacsnake::GameState::Score > pacsnake::GameState::CalculateScores()
 	{
 		if ( pawn.m_growsTail )
 		{
-			scores.push_back( { pawn.m_id, CalcScoreForPawn( m_grid, pawn ) });
+			scores.push_back( { pawn.m_id, CalcTailLength( pawn.m_id ) });
 		}
 	}
 
