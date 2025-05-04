@@ -35,7 +35,7 @@ namespace pacsnake
 			Uint32 m_score = 0u;
 		};
 
-		Uint32 CalcTailLength( pacsnake::GridPawnID owner ) const;
+		pacsnake::GridPawnID GetLastTail( pacsnake::GridPawnID owner ) const;
 
 		std::vector< Score > CalculateScores() const;
 

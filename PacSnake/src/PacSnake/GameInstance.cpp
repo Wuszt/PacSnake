@@ -21,6 +21,7 @@
 #include "../PacSnakeCommon/GridSystem.h"
 #include "../PacSnakeCommon/Snake.h"
 #include "../PacSnakeCommon/PlayerCharacterComponent.h"
+#include "../PacSnakeCommon/NaiveAIComponent.h"
 
 #ifdef FORGE_DEBUGGING
 #include "Systems/DebugSystem.h"
@@ -73,8 +74,18 @@ void pacsnake::GameInstance::Initialize( forge::EngineInstance& engineInstance )
 		transformComp->SetWorldOrientation( Quaternion::CreateFromDirection( -transformComp->GetWorldPosition().Normalized() ) );
 	} } );
 
+	//auto& gridSystem = engineInstance.GetSystemsManager().GetSystem< pacsnake::GridSystem >();
+	//gridSystem.SetPeriod( 0.0f );
+	//gridSystem.SetSimUpdatesAmountPerTick( 1000u );
+
 	engineInstance.GetObjectsManager().RequestCreatingObject< pacsnake::Snake >( { .m_postInitFunc = [ & ]( forge::Object& snake, forge::ObjectInitData& )
 		{
+			//snake.AddComponent< pacsnake::PlayerCharacterComponent >();
+			snake.AddComponent< pacsnake::NaiveAIComponent >();
+			//auto* aiComponent = snake.GetComponent< pacsnake::NaiveAIComponent >();
+			//aiComponent->SetTimeBudget( 1.0f / 100.0f );
+			//aiComponent->EnableDebugs( false );
+
 			auto* playerComponent = snake.GetComponent< pacsnake::PlayerCharacterComponent >();
 			engineInstance.GetSystemsManager().GetSystem< systems::PlayerSystem >().SetActivePlayerComponent( *playerComponent );
 		} } );

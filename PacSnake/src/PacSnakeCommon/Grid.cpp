@@ -30,6 +30,21 @@ const pacsnake::GridPawn* pacsnake::Grid::GetPawnAtPos( const Vector2& pos ) con
 	return nullptr;
 }
 
+forge::co::Generator< Vector2 > pacsnake::Grid::FindUnocuppiedCells()
+{
+	for ( Int32 y = -static_cast< Int32 >( GetHeight() / 2 ); y <= static_cast< Int32 >( GetHeight() / 2 ); ++y )
+	{
+		for ( Int32 x = -static_cast< Int32 >( GetWidth() / 2 ); x <= static_cast< Int32 >( GetWidth() / 2 ); ++x )
+		{
+			Vector2 pos( static_cast< Float >( x ), static_cast< Float >( y ) );
+			if ( GetPawnAtPos( pos ) == nullptr )
+			{
+				co_yield pos;
+			}
+		}
+	}
+}
+
 const pacsnake::GridPawn* pacsnake::Grid::GetPawn( GridPawnID id ) const
 {
 	auto it = std::find_if( m_pawns.begin(), m_pawns.end(), [ id ]( const GridPawn& pawn ) { return pawn.m_id == id; } );

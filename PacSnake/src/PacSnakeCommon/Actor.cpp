@@ -25,6 +25,11 @@ void pacsnake::Actor::OnInit( forge::ObjectInitData& initData )
 			OnSimUpdated();
 		} );
 
+	m_onNewPickupToken = gridSystem.GetGameState().RegisterOnNewTail( [ this ]( pacsnake::GridPawnID )
+		{
+			OnNewPickup();
+		} );
+
 	m_updateToken = GetEngineInstance().GetUpdateManager().RegisterUpdateFunction( forge::UpdateManager::BucketType::Update,
 		[ this ]()
 		{
@@ -45,23 +50,25 @@ void pacsnake::Actor::OnSimUpdated()
 
 void pacsnake::Actor::Update()
 {
-	if ( !m_enabledSmoothMovement )
-	{
-		return;
-	}
-
 	auto& gridSystem = GetEngineInstance().GetSystemsManager().GetSystem< pacsnake::GridSystem >();
 	if ( gridSystem.GetGameState().IsFinished() )
 	{
 		return;
 	}
 
-	GridPawn& pawn = GetPawn();
+	const GridPawn& pawn = GetPawn();
 
-	const Float currentTime = forge::Time::GetTime();
-	const Float t = ( currentTime - gridSystem.GetLastSimUpdateTime() ) / gridSystem.GetPrevPeriod();
+	if ( m_enabledSmoothMovement )
+	{
+		const Float currentTime = forge::Time::GetTime();
+		const Float t = ( currentTime - gridSystem.GetLastSimUpdateTime() ) / gridSystem.GetPrevPeriod();
 
-	GetComponent< forge::TransformComponent >()->SetWorldPosition( Vector3( Math::Lerp( pawn.m_prevPos, pawn.m_pos, t ), 0.5f ) );
+		GetComponent< forge::TransformComponent >()->SetWorldPosition( Vector3( Math::Lerp( pawn.m_prevPos, pawn.m_pos, t ), 0.5f ) );
+	}
+	else
+	{
+		GetComponent< forge::TransformComponent >()->SetWorldPosition( Vector3( pawn.m_pos, 0.5f ) );
+	}
 }
 
 pacsnake::GridPawn& pacsnake::Actor::GetPawn() const

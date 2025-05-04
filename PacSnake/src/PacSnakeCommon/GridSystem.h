@@ -2,10 +2,11 @@
 #include "GameEngine/ISystem.h"
 #include "../PacSnakeCommon/Grid.h"
 #include "GameState.h"
+#include "Systems/IDebuggable.h"
 
 namespace pacsnake
 {
-	class GridSystem : public systems::ISystem
+	class GridSystem : public systems::ISystem, public forge::IDebuggable
 	{
 		RTTI_DECLARE_CLASS( GridSystem, systems::ISystem );
 
@@ -16,6 +17,17 @@ namespace pacsnake
 
 		forge::CallbackToken RegisterOnSimUpdate( std::function< void() > func );
 		forge::CallbackToken RegisterOnBeforeSimUpdate( std::function< void() > func );
+
+		void SetPeriod( float period )
+		{
+			FORGE_ASSERT( period >= 0.0f );
+			m_period = period;
+		}
+
+		void SetSimUpdatesAmountPerTick( Uint32 amount )
+		{
+			m_simUpdatesAmountPerTick = amount;
+		}
 
 		Grid& GetGrid()
 		{
@@ -51,8 +63,15 @@ namespace pacsnake
 		forge::Callback<> m_onSimUpdated;
 		forge::Callback<> m_onBeforeSimUpdate;
 
+		Uint32 m_simUpdatesAmountPerTick = 1u;
+
 		Float m_lastSimUpdateTime = 0.0f;
 		Float m_period = 0.1f;
 		Float m_prevPeriod = m_period;
+
+#ifdef FORGE_IMGUI_ENABLED
+		void OnRenderDebug() override;
+#endif
+
 	};
 }

@@ -1,8 +1,9 @@
-#include "Fpch.h"
-#include "GameInstance.h"
+#include "Core/PublicDefaults.h"
 #include "GameEngine/EngineInstance.h"
+#include "../PacSnakeCommon/PublicDefaults.h"
+#include "GameInstance.h"
 
-int main()
+Int32 main()
 {
 	pacsnake::GameInstance gameInstance( "PacSnake" );
 

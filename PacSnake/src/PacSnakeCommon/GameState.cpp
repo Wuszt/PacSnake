@@ -29,7 +29,7 @@ Vector2 GenerateUnoccupiedPos( const pacsnake::Grid& grid )
 pacsnake::GameState::GameState( Uint32 gridHeight, Uint32 gridWidth )
 	: m_grid( gridHeight, gridWidth )
 {
-	m_pickupID = m_grid.AddPawn( GenerateUnoccupiedPos( m_grid ) );
+	m_pickupID = m_grid.AddPawn( { -static_cast< Float >( gridWidth / 2 ), 0.0f } );
 }
 
 void pacsnake::GameState::Update()
@@ -64,6 +64,11 @@ void pacsnake::GameState::Update()
 			m_isFinished = true;
 		}
 	}
+
+	if ( IsFinished() )
+	{
+		FORGE_LOG( "Game Over" );
+	}
 }
 
 forge::CallbackToken pacsnake::GameState::RegisterOnNewTail( std::function< void( pacsnake::GridPawnID ) > func )
@@ -76,15 +81,20 @@ pacsnake::GridPawn& pacsnake::GameState::GetPickupPawn()
 	return *GetGrid().GetPawn( GetPickupID() );
 }
 
-Uint32 pacsnake::GameState::CalcTailLength( pacsnake::GridPawnID owner ) const
+pacsnake::GridPawnID pacsnake::GameState::GetLastTail( pacsnake::GridPawnID owner ) const
 {
 	auto* pawn = m_grid.GetPawn( owner );
-	if ( pawn == nullptr || !pawn->m_nextTailID.IsValid() )
+	if ( pawn == nullptr )
 	{
-		return 0u;
+		return {};
 	}
 
-	return 1 + CalcTailLength( pawn->m_nextTailID );
+	if ( pawn->m_nextTailID.IsValid() )
+	{
+		return GetLastTail( pawn->m_nextTailID );
+	}
+
+	return owner;
 }
 
 std::vector< pacsnake::GameState::Score > pacsnake::GameState::CalculateScores() const
@@ -94,7 +104,7 @@ std::vector< pacsnake::GameState::Score > pacsnake::GameState::CalculateScores()
 	{
 		if ( pawn.m_growsTail )
 		{
-			scores.push_back( { pawn.m_id, CalcTailLength( pawn.m_id ) });
+			scores.push_back( { pawn.m_id, pawn.m_tailLength });
 		}
 	}
 
@@ -104,20 +114,31 @@ std::vector< pacsnake::GameState::Score > pacsnake::GameState::CalculateScores()
 void pacsnake::GameState::OnPickupGrabbed( pacsnake::GridPawnID grabberID )
 {
 	auto* tailAttachment = m_grid.GetPawn( grabberID );
+	++tailAttachment->m_tailLength;
 	
 	while ( tailAttachment->m_nextTailID.IsValid() )
 	{
 		tailAttachment = m_grid.GetPawn( tailAttachment->m_nextTailID );
+		++tailAttachment->m_tailLength;
 	}
 	auto tailAttachmentID = tailAttachment->m_id;
 
 	auto newTail = m_grid.GetPawn( m_grid.AddPawn( tailAttachment->m_prevPos ) );
 	tailAttachment = m_grid.GetPawn( tailAttachmentID );
 
-
 	newTail->m_nextTailID = tailAttachment->m_nextTailID;
 	tailAttachment->m_nextTailID = newTail->m_id;
 
+	if ( m_grid.GetPawns().GetSize() > m_grid.GetWidth() * m_grid.GetHeight() )
+	{
+		m_isFinished = true;
+		FORGE_LOG( "Win!" );
+	}
+	else
+	{
+		GetGrid().GetPawn( m_pickupID )->m_pos = GenerateUnoccupiedPos( m_grid );
+		FORGE_LOG( "New pickup pos: %s", GetGrid().GetPawn( m_pickupID )->m_pos.ToDebugString().c_str() );
+	}
+
 	m_onNewTail.Invoke( newTail->m_id );
-	GetGrid().GetPawn( m_pickupID )->m_pos = GenerateUnoccupiedPos( m_grid );
 }

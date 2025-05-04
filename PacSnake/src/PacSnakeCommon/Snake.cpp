@@ -12,15 +12,12 @@ RTTI_IMPLEMENT_TYPE( pacsnake::Snake );
 void pacsnake::Snake::OnInit( forge::ObjectInitData& initData )
 {
 	Super::OnInit( initData );
-	FORGE_ASSURE( AddComponent< forge::RenderingComponent >() );
-	GetComponent< forge::RenderingComponent >()->LoadMeshAndMaterial( forge::Path( "PacSnake\\Snake\\Snake.fbx" ) );
-
-	//AddComponent< pacsnake::PlayerCharacterComponent >();
-	AddComponent< pacsnake::NaiveAIComponent >();
-	GetComponent< forge::TransformComponent >()->SetWorldScale( Vector3( 1.0f, 1.0f, 1.0f ) );
-
 	GetPawn().m_dir = Vector2( 1.0f, 0.0f );
 	GetPawn().m_growsTail = true;
+
+	FORGE_ASSURE( AddComponent< forge::RenderingComponent >() );
+	GetComponent< forge::RenderingComponent >()->LoadMeshAndMaterial( forge::Path( "PacSnake\\Snake\\Snake.fbx" ) );
+	GetComponent< forge::TransformComponent >()->SetWorldScale( Vector3( 1.0f, 1.0f, 1.0f ) );
 
 	auto& gridSystem = GetEngineInstance().GetSystemsManager().GetSystem< pacsnake::GridSystem >();
 	m_gridUpdateToken = gridSystem.RegisterOnSimUpdate( [ this ]()

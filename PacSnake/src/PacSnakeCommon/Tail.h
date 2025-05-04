@@ -15,8 +15,6 @@ namespace pacsnake
 
 	public:
 		virtual void OnInit( forge::ObjectInitData& initData ) override;
-		
-	private:
-		pacsnake::Tail* m_nextTail = nullptr;
+		virtual void OnNewPickup() override;
 	};
 }

@@ -38,6 +38,7 @@ namespace pacsnake
 		Vector2 m_prevPos;
 		const GridPawnID m_id;
 		GridPawnID m_nextTailID;
+		Uint32 m_tailLength = 0u;
 		Bool m_growsTail = false;
 	};
 
@@ -53,6 +54,8 @@ namespace pacsnake
 		GridPawn* GetPawn( GridPawnID id );
 		const GridPawn* GetPawn( GridPawnID id ) const;
 		const GridPawn* GetPawnAtPos( const Vector2& pos ) const;
+
+		forge::co::Generator< Vector2 > FindUnocuppiedCells();
 
 		Uint32 GetWidth() const
 		{

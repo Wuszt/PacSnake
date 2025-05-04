@@ -29,6 +29,16 @@ forge::CallbackToken pacsnake::Character::RegisterOnBeforeActionTaken( std::func
 	return m_onBeforeActionTaken.AddListener( std::move( func ) );
 }
 
+forge::CallbackToken pacsnake::Character::RegisterOnSimUpdated( std::function< void() > func )
+{
+	return m_onSimUpdated.AddListener( std::move( func ) );
+}
+
+forge::CallbackToken pacsnake::Character::RegisterOnNewPickup( std::function< void() > func )
+{
+	return m_onNewPickup.AddListener( std::move( func ) );
+}
+
 pacsnake::Character::Action pacsnake::Character::TranslateDirectionToAction( const Vector2& currentDir, const Vector2& newDir )
 {
 	const Float crossProduct = Vector3( currentDir, 0.0f ).Cross( Vector3( newDir, 0.0f ) ).Z;
@@ -102,4 +112,16 @@ void pacsnake::Character::OnBeforeSimUpdated()
 	}
 
 	m_scheduledAction = Action::None;
+}
+
+void pacsnake::Character::OnSimUpdated()
+{
+	Super::OnSimUpdated();
+	m_onSimUpdated.Invoke();
+}
+
+void pacsnake::Character::OnNewPickup()
+{
+	Super::OnNewPickup();
+	m_onNewPickup.Invoke();
 }

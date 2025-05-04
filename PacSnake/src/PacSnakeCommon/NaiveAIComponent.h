@@ -18,7 +18,6 @@ namespace pacsnake
 	struct PathNode
 	{
 		Vector2 m_pos;
-		Vector2 m_dir;
 		Uint32 m_time = 0u;
 
 		Bool operator==( const PathNode& node ) const = default;
@@ -35,7 +34,7 @@ struct std::hash< pacsnake::PathNode >
 {
 	std::size_t operator()( const pacsnake::PathNode& node ) const noexcept
 	{
-		return Math::CombineHashes( Math::CalculateHash( node.m_pos ), Math::CalculateHash( node.m_dir ), Math::CalculateHash( node.m_time ) );
+		return Math::CombineHashes( Math::CalculateHash( node.m_pos ), Math::CalculateHash( node.m_time ) );
 	}
 };
 
@@ -45,14 +44,36 @@ namespace pacsnake
 	{
 		RTTI_DECLARE_CLASS( NaiveAIComponent, pacsnake::AIComponent );
 
+	public:
+		void SetTimeBudget( Float budget )
+		{
+			FORGE_ASSERT( budget > 0.0f );
+			m_timeBudget = budget;
+		}
+
+		void EnableDebugs( Bool enabled )
+		{
+			m_debugEnabled = enabled;
+		}
+
 	protected:
 		virtual void OnAttached( forge::EngineInstance& engineInstance, ecs::CommandsQueue& commandsQueue, forge::ObjectInitData* initData ) override;
 		virtual void OnBeforeActionTaken() override;
-
+		virtual void OnSimUpdated() override;
+		virtual void OnNewPickup() override;
+		
 	private:
-		void ScheduleNextAction_Simple();
-		void ScheduleNextAction_Prediction();
+		void CalculatePath();
+		Bool CheckPathToTail( const forge::ai::PathAsNodes& executedPath, Bool withPickup, forge::ai::PathAsNodes* outPath = nullptr );
 
-		AI::NavigationGraph< PathNode > m_graph;
+		void DrawNodes( forge::ArraySpan< const forge::ai::NodeID > nodes, LinearColor color, Float zOffset = 1.0f );
+
+		forge::ai::NavigationGraph< Vector2 > m_graph;
+		std::vector< Vector2 > m_currentPath;
+		Uint32 m_indexOnPath = 0u;
+
+		Float m_timeBudget = 1.0f / 60.0f;
+
+		Bool m_debugEnabled = false;
 	};
 }

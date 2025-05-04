@@ -29,6 +29,8 @@ namespace pacsnake
 		const Vector2& GetDir() const;
 
 		[[nodiscard]] forge::CallbackToken RegisterOnBeforeActionTaken( std::function< void() > func );
+		[[nodiscard]] forge::CallbackToken RegisterOnSimUpdated( std::function< void() > func );
+		[[nodiscard]] forge::CallbackToken RegisterOnNewPickup( std::function< void() > func );
 
 		static Action TranslateDirectionToAction( const Vector2& currentDir, const Vector2& newDir );
 
@@ -37,6 +39,8 @@ namespace pacsnake
 
 	protected:
 		virtual void OnBeforeSimUpdated() override;
+		virtual void OnSimUpdated() override;
+		virtual void OnNewPickup() override;
 
 	private:
 		void TurnLeft();
@@ -44,5 +48,7 @@ namespace pacsnake
 
 		Action m_scheduledAction;
 		forge::Callback<> m_onBeforeActionTaken;
+		forge::Callback<> m_onSimUpdated;
+		forge::Callback<> m_onNewPickup;
 	};
 }

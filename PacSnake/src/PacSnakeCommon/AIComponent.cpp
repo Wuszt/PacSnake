@@ -8,6 +8,8 @@ void pacsnake::AIComponent::OnAttached( forge::EngineInstance& engineInstance, e
 {
 	Super::OnAttached( engineInstance, commandsQueue, initData );
 	m_onBeforeActionTakenToken = GetCharacter().RegisterOnBeforeActionTaken( [ this ]() { OnBeforeActionTaken(); } );
+	m_onSimUpdatedToken = GetCharacter().RegisterOnSimUpdated( [ this ]() { OnSimUpdated(); } );
+	m_onNewPickupToken = GetCharacter().RegisterOnNewPickup( [ this ]() { OnNewPickup(); } );
 }
 
 pacsnake::Character& pacsnake::AIComponent::GetCharacter()
