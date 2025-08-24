@@ -1,4 +1,6 @@
-<img width="400" height="400" alt="ChatGPT Image Aug 24, 2025, 05_02_55 PM" src="https://github.com/user-attachments/assets/10e9bbbd-d714-4a9f-ad34-67048059d679" />
+<div align="center">
+  <img height="400" alt="PacSnake" src="https://github.com/user-attachments/assets/7e2f10e2-6b34-40a6-8150-0cecba73cf84" />
+</div>
 
 # PacSnake  
 Classic Snake game - with a twist! (Well, not yet, but it’s coming.)
