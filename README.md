@@ -8,7 +8,7 @@ Classic Snake game - with a twist! (Well, not yet, but it’s coming.)
 This project started as an experiment: *can [Forge](https://github.com/Wuszt/Forge) be used to make even a simplest game?*  
 
 ## About  
-The level was created in a separate editor app and is loaded by the game at runtime.  
+The level was created in a Forge's Editor app and is loaded by the game at runtime.  
 The game project is standalone but depends on the Forge engine.  
 
 The snake can be controlled either by a human or by an AI. The entire game state is decoupled from rendering, which means the simulation can run without visuals — leaving the door open to plug in machine learning in the future. 
