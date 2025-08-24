@@ -16,5 +16,8 @@ namespace pacsnake
 	public:
 		virtual void OnInit( forge::ObjectInitData& initData ) override;
 		virtual void OnNewPickup() override;
+
+	private:
+		void UpdateColor();
 	};
 }

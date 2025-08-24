@@ -141,7 +141,7 @@ void pacsnake::NaiveAIComponent::CalculatePath()
 
 	if ( GetPawn().m_tailLength == cellsAmount - 2 )
 	{
-		forge::ai::FindPath_AStar( { m_graph.GetIDFromLocation( GetPawn().m_pos ) }, m_graph.GetIDFromLocation( pickup.m_pos ), AStarConfig< decltype( nodeAccesibilityFunc ) >( m_graph, {}, nodeAccesibilityFunc ), result);
+		forge::ai::FindPath_AStar( { m_graph.GetIDFromLocation( GetPawn().m_pos ) }, m_graph.GetIDFromLocation( pickup.m_pos ), AStarConfig< decltype( nodeAccesibilityFunc ) >( m_graph, {}, nodeAccesibilityFunc ), result );
 	}
 
 	if ( result.empty() )

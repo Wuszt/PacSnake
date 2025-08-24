@@ -80,13 +80,12 @@ void pacsnake::GameInstance::Initialize( forge::EngineInstance& engineInstance )
 
 	engineInstance.GetObjectsManager().RequestCreatingObject< pacsnake::Snake >( { .m_postInitFunc = [ & ]( forge::Object& snake, forge::ObjectInitData& )
 		{
-			//snake.AddComponent< pacsnake::PlayerCharacterComponent >();
 			snake.AddComponent< pacsnake::NaiveAIComponent >();
-			//auto* aiComponent = snake.GetComponent< pacsnake::NaiveAIComponent >();
-			//aiComponent->SetTimeBudget( 1.0f / 100.0f );
-			//aiComponent->EnableDebugs( false );
+			auto* aiComponent = snake.GetComponent< pacsnake::NaiveAIComponent >();
+			aiComponent->SetTimeBudget( 1.0f / 100.0f );
+			aiComponent->EnableDebugs( false );
 
-			auto* playerComponent = snake.GetComponent< pacsnake::PlayerCharacterComponent >();
-			engineInstance.GetSystemsManager().GetSystem< systems::PlayerSystem >().SetActivePlayerComponent( *playerComponent );
+			//auto* playerComponent = snake.GetComponent< pacsnake::PlayerCharacterComponent >();
+			//engineInstance.GetSystemsManager().GetSystem< systems::PlayerSystem >().SetActivePlayerComponent( *playerComponent );
 		} } );
 }

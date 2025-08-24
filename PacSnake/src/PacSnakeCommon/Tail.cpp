@@ -14,11 +14,18 @@ void pacsnake::Tail::OnInit( forge::ObjectInitData& initData )
 	GetComponent< forge::RenderingComponent >()->LoadMeshAndMaterial( forge::Path( "Engine\\Models\\sphere.obj" ) );
 	GetComponent< forge::TransformComponent >()->SetWorldScale( { 1.0f, 1.0f, 1.0f } );
 	EnableSmoothMovement( true );
+
+	UpdateColor();
 }
 
 void pacsnake::Tail::OnNewPickup()
 {
 	Super::OnNewPickup();
+	UpdateColor();
+}
+
+void pacsnake::Tail::UpdateColor()
+{
 	auto& material = *GetComponent< forge::RenderingComponent >()->GetDirtyData()->m_renderable.GetMaterials()[ 0 ];
 	if ( GetPawn().m_nextTailID.IsValid() )
 	{
@@ -26,7 +33,7 @@ void pacsnake::Tail::OnNewPickup()
 	}
 	else
 	{
-		material.GetConstantBuffer()->SetData( "diffuseColor", LinearColor( 1.0f, 0.86f, 0.4f ) );
+		material.GetConstantBuffer()->SetData( "diffuseColor", LinearColor( 0.29f, 0.64f, 0.3f ) );
 	}
 	material.GetConstantBuffer()->UpdateBuffer();
 }
